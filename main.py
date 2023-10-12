@@ -28,17 +28,6 @@ def button():
 	BUTTON+=[[InlineKeyboardButton(text="👤 𝖮𝗐𝗇𝖾𝗋",url="https://t.me/EpikOwner")]]
 	return InlineKeyboardMarkup(BUTTON)
 
-# START KOMUTU
-@K_G.on_message(filters.command("start"))
-async def _(client, message):
-	user = message.from_user
-
-	await message.reply_text(text="**👋🏻 Merhaba {}\n\n♻️ Doğruluk ve Cesaret Oyun Bot'uyum .\n\n• Komut •> /dc **".format(
-		user.mention,
-		),
-	disable_web_page_preview=True,
-	reply_markup=button()
-	)
 
 # DC KOMUTU İCİN BUTTONLAR
 def d_or_c(user_id):
@@ -55,39 +44,10 @@ async def _(client, message):
 		reply_markup=d_or_c(user.id)
 		)
 
-# Buttonlarımızı Yetkilendirelim
-@K_G.on_callback_query()
-async def _(client, callback_query):
-	d_soru=random.choice(D_SORU)
-	c_soru=random.choice(C_SORU)
-	user = callback_query.from_user
 
-	c_q_d, user_id = callback_query.data.split()
-
-	if str(user.id) == str(user_id):
-		# DOĞRULUK SORUSU
-		if c_q_d == "d_data":
-			await callback_query.answer(text="📕 Doğruluk Sorusu İstedin", show_alert=False)
-			await client.delete_messages(
-				chat_id=callback_query.message.chat.id,
-				message_ids=callback_query.message.id)
-
-			await callback_query.message.reply_text("**{user}\n📕 Doğruluk Seçtin, Çok Güzel .\n\n💬 Sorum Şu: {d_soru}**".format(user=user.mention, d_soru=d_soru)) # Sonra Kullanıcıyı Etiketleyerek Sorusunu Gönderelim
-			return
                 # CESARET SORUSU
 		if c_q_d == "c_data":
 			await callback_query.answer(text="📓 Cesaret Sorusu İstedin .", show_alert=False)
-			await client.delete_messages(
-				chat_id=callback_query.message.chat.id,
-				message_ids=callback_query.message.id)
-			await callback_query.message.reply_text("**{user}\n📓 Cesaret Seçtin, Sanırım Fazla Cesaretlisin .\n\n💬 Yapman Gereken şu: {c_soru}**".format(user=user.mention, c_soru=c_soru))
-			return
-
-
-	# BUTONA TIKLAYAN KİŞİ KOMUTU CALIŞTIRAN KİŞİ DEĞİL İSE UYARI GÖSTERİR 
-	else:
-		await callback_query.answer(text="Komutu Sen Kullanmadın !", show_alert=False)
-		return
 
 
 K_G.run() # Botumuzu Calıştıralım :)
